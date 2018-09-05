@@ -17,11 +17,11 @@ colors = {
     'text': '#7FDBFF'
 }
 
-df = pd.read_csv("Unique Data.csv")
-dfHC = pd.read_csv("Unique Data HC.csv")
+df = pd.read_csv("Unique Data.csv", encoding = "latin-1")
+dfHC = pd.read_csv("Unique Data HC.csv", encoding = "latin-1")
 headers = list(df.columns.values)
 
-unique_names = open("uniqueNames.txt", "r").readlines()
+unique_names = open("uniqueNames.txt", "r", encoding = "latin-1").readlines()
 unique_names = list(map(lambda name : name.rstrip(), unique_names))
 
 app.layout = html.Div(
