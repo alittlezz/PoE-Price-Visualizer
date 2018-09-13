@@ -62,7 +62,6 @@ app.layout = html.Div(
     Output(component_id='output-graph', component_property='children'),
     [Input(component_id='input', component_property='value')]
 )
-
 def update(input_data):
 	if input_data in headers:
 		return dcc.Graph(
