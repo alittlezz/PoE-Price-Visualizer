@@ -26,14 +26,18 @@ class Unique(db.Model):
 		self.price = price
 		self.date = date
 
+	def __repr__(self):
+		return self.name + ' ' + self.league + ' ' + str(self.price) + ' ' + str(self.date)
+
+	def __str__(self):
+		return self.name + ' ' + self.league + ' ' + str(self.price) + ' ' + str(self.date)
+
 def add_unique(name, league, price, date):
 	unique = Unique(name, league, price, date)
 	db.session.add(unique)
 	db.session.commit()
 
 db.create_all()
-add_unique("Vali Heart 3", "Delve", 999.95, datetime.date.today())
-
 
 app = dash.Dash(server = server)
 app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})

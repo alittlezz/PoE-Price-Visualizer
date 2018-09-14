@@ -23,15 +23,21 @@ class Unique(db.Model):
 		self.price = price
 		self.date = date
 
+	def __repr__(self):
+		return self.name + ' ' + self.league + ' ' + str(self.price) + ' ' + str(self.date)
+
+	def __str__(self):
+		return self.name + ' ' + self.league + ' ' + str(self.price) + ' ' + str(self.date)
+
 def add_unique(name, league, price, date):
 	unique = Unique(name, league, price, date)
 	db.session.add(unique)
 	db.session.commit()
 
 def get_uniques():
-	results = Unique.query.filter(Unique.price <= 300, Unique.league == "Delve")
+	results = Unique.query.all()
 	for unique in results:
-		print(unique.name)
+		print(unique)
 
 app = dash.Dash(__name__, server = server)
 app.layout = html.Div(
