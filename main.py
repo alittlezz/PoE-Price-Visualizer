@@ -32,7 +32,7 @@ def add_unique(name, league, price, date):
 	db.session.commit()
 
 db.create_all()
-add_unique("Vali Heart 2", "Delve", 999.95, datetime.date.today())
+#add_unique("Vali Heart 3", "Delve", 999.95, datetime.date.today())
 
 app = dash.Dash(server = server)
 app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
