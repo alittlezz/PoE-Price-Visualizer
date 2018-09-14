@@ -37,8 +37,8 @@ def add_unique(name, league, price, date):
 	db.session.add(unique)
 	db.session.commit()
 
-db.create_all()
-add_unique("Zarfi Hart", "Delve HC", 1234, datetime.date(2018, 9, 16))
+#db.create_all()
+add_unique("Please no dup", "Headhunter", 50, datetime.date(2020, 9, 16))
 
 app = dash.Dash(server = server)
 app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
