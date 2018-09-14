@@ -37,7 +37,7 @@ def add_unique(name, league, price, date):
 	db.session.add(unique)
 	db.session.commit()
 
-#db.create_all()
+db.create_all()
 #add_unique("Please no dup Final", "Headhunter HC", 50, datetime.date(2020, 9, 16))
 
 app = dash.Dash(server = server)
@@ -66,7 +66,7 @@ app.layout = html.Div(
 	        }
 	    ),
 
-	    html.Div(children=Unique.query.all(), 
+	    html.Div(children="Meme title", 
 	    		 style={
 			        'textAlign': 'center',
 			        'color': colors['text']
