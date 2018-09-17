@@ -41,9 +41,10 @@ def get_uniques():
 	results = db.session.query(Unique).all()
 	for unique in results:
 		print(unique)
+	return len(results)
 
 #db.create_all()
-#add_unique("Please no dup Final", "Headhunter HC", 50, datetime.date(2020, 9, 16))
+add_unique("Please no dup Final", "Headhunter HC", 50, datetime.date(2020, 9, 16))
 
 app = dash.Dash(server = server)
 app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
@@ -135,6 +136,5 @@ def update(input_data):
 	# 	)
 
 if __name__ == '__main__':
-	#add_unique("Tudor eat 2", "HH NO QQ", 123.23, datetime.date.today())
 	add_unique("Tudor 3", "Delve", 23, datetime.date.today())
-	app.run_server(debug=True)
+	app.run_server(debug=False)
