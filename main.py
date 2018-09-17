@@ -130,5 +130,5 @@ def update(input_data):
 	# 	)
 
 if __name__ == '__main__':
-	add_unique("Tudor eat 2", "HH NO QQ", 123.23, datetime.date.today())
+	#add_unique("Tudor eat 2", "HH NO QQ", 123.23, datetime.date.today())
     app.run_server(debug=False)
