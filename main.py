@@ -37,7 +37,7 @@ def add_unique(name, league, price, date):
 	db.session.add(unique)
 	db.session.commit()
 
-db.create_all()
+#db.create_all()
 #add_unique("Please no dup Final", "Headhunter HC", 50, datetime.date(2020, 9, 16))
 
 app = dash.Dash(server = server)
@@ -130,4 +130,5 @@ def update(input_data):
 	# 	)
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+	add_unique("Tudor eat 2", "HH NO QQ", 123.23, datetime.date.today())
+    app.run_server(debug=False)

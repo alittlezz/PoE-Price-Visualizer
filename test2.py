@@ -35,9 +35,13 @@ def add_unique(name, league, price, date):
 	db.session.commit()
 
 def get_uniques():
-	results = Unique.query.all()
+	results = db.session.query(Unique).all()
 	for unique in results:
 		print(unique)
+
+def delete_table():
+	db.session.query(Unique).delete(synchronize_session=False)
+	db.session.commit()
 
 app = dash.Dash(__name__, server = server)
 app.layout = html.Div(
@@ -48,5 +52,6 @@ app.layout = html.Div(
 )
 
 if __name__ == "__main__":
+	#add_unique("Tudor eat", "HH NO QQ", 123.23, datetime.date.today())
 	get_uniques()
 	app.run_server(debug=False)
