@@ -37,6 +37,11 @@ def add_unique(name, league, price, date):
 	db.session.add(unique)
 	db.session.commit()
 
+def get_uniques():
+	results = db.session.query(Unique).all()
+	for unique in results:
+		print(unique)
+
 #db.create_all()
 #add_unique("Please no dup Final", "Headhunter HC", 50, datetime.date(2020, 9, 16))
 
@@ -131,5 +136,5 @@ def update(input_data):
 
 if __name__ == '__main__':
 	#add_unique("Tudor eat 2", "HH NO QQ", 123.23, datetime.date.today())
-	#add_unique("Tudor 1", "Delve", 23, datetime.date.today())
-    app.run_server(debug=True)
+	add_unique("Tudor 3", "Delve", 23, datetime.date.today())
+	app.run_server(debug=False)
