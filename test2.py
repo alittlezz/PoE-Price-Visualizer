@@ -47,7 +47,6 @@ app = dash.Dash(__name__, server = server)
 app.layout = html.Div(
     html.Div([
         html.H4('TERRA Satellite Live Feed'),
-        html.Div(id='live-update-text')
     ])
 )
 

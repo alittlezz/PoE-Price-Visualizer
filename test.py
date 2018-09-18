@@ -1,91 +1,89 @@
-import datetime
+import datetime as dt
+import os
+import time
 
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-import plotly
+import numpy as np
+import pandas as pd
 from dash.dependencies import Input, Output
-    
-# pip install pyorbital
-from pyorbital.orbital import Orbital
-satellite = Orbital('TERRA')
+from flask_caching import Cache
 
 app = dash.Dash(__name__)
-server = app.server
-app.layout = html.Div(
-    html.Div([
-        html.H4('TERRA Satellite Live Feed'),
-        html.Div(id='live-update-text'),
-        dcc.Graph(id='live-update-graph'),
-        dcc.Interval(
-            id='interval-component',
-            interval=1*1000, # in milliseconds
-            n_intervals=0
-        )
-    ])
-)
+cache = Cache(app.server, config={
+    'CACHE_TYPE': 'filesystem',
+    'CACHE_DIR': 'cache-directory'
+})
+
+TIMEOUT = 5
+
+@cache.memoize(timeout=TIMEOUT)
+def query_data():
+    # This could be an expensive data querying step
+    df =  pd.DataFrame(
+        np.random.randint(0, 100, size=(100, 4)),
+        columns=list('ABCD')
+    )
+    now = dt.datetime.now()
+    df['time'] = [now - dt.timedelta(seconds=5*i) for i in range(100)]
+    return df
+
+def get_dataframe():
+    return query_data()
+
+app.layout = html.Div([
+    html.Div('Data was updated within the last {} seconds'.format(TIMEOUT)),
+    dcc.Dropdown(
+        id='live-dropdown',
+        value='A',
+        options=[{'label': i, 'value': i} for i in ['A', 'B', 'C', 'D']]
+    ),
+    dcc.Graph(id='live-graph')
+])
 
 
-@app.callback(Output('live-update-text', 'children'),
-              [Input('interval-component', 'n_intervals')])
-def update_metrics(n):
-    lon, lat, alt = satellite.get_lonlatalt(datetime.datetime.now())
-    style = {'padding': '5px', 'fontSize': '16px'}
-    return [
-        html.Span('Longitude: {0:.2f}'.format(lon), style=style),
-        html.Span('Latitude: {0:.2f}'.format(lat), style=style),
-        html.Span('Altitude: {0:0.2f}'.format(alt), style=style)
-    ]
-
-
-# Multiple components can update everytime interval gets fired.
-@app.callback(Output('live-update-graph', 'figure'),
-              [Input('interval-component', 'n_intervals')])
-def update_graph_live(n):
-    satellite = Orbital('TERRA')
-    data = {
-        'time': [],
-        'Latitude': [],
-        'Longitude': [],
-        'Altitude': []
+@app.callback(Output('live-graph', 'figure'),
+              [Input('live-dropdown', 'value')])
+def update_live_graph(value):
+    df = get_dataframe()
+    now = dt.datetime.now()
+    return {
+        'data': [{
+            'x': df['time'],
+            'y': df[value],
+            'line': {
+                'width': 1,
+                'color': '#0074D9',
+                'shape': 'spline'
+            }
+        }],
+        'layout': {
+            # display the current position of now
+            # this line will be between 0 and 60 seconds
+            # away from the last datapoint
+            'shapes': [{
+                'type': 'line',
+                'xref': 'x', 'x0': now, 'x1': now,
+                'yref': 'paper', 'y0': 0, 'y1': 1,
+                'line': {'color': 'darkgrey', 'width': 1}
+            }],
+            'annotations': [{
+                'showarrow': False,
+                'xref': 'x', 'x': now, 'xanchor': 'right',
+                'yref': 'paper', 'y': 0.95, 'yanchor': 'top',
+                'text': 'Current time ({}:{}:{})'.format(
+                    now.hour, now.minute, now.second),
+                'bgcolor': 'rgba(255, 255, 255, 0.8)'
+            }],
+            # aesthetic options
+            'margin': {'l': 40, 'b': 40, 'r': 20, 't': 10},
+            'xaxis': {'showgrid': False, 'zeroline': False},
+            'yaxis': {'showgrid': False, 'zeroline': False}
+        }
     }
 
-    # Collect some data
-    for i in range(180):
-        time = datetime.datetime.now() - datetime.timedelta(seconds=i*20)
-        lon, lat, alt = satellite.get_lonlatalt(
-            time
-        )
-        data['Longitude'].append(lon)
-        data['Latitude'].append(lat)
-        data['Altitude'].append(alt)
-        data['time'].append(time)
-
-    # Create the graph with subplots
-    fig = plotly.tools.make_subplots(rows=2, cols=1, vertical_spacing=0.2)
-    fig['layout']['margin'] = {
-        'l': 30, 'r': 10, 'b': 30, 't': 10
-    }
-    fig['layout']['legend'] = {'x': 0, 'y': 1, 'xanchor': 'left'}
-
-    fig.append_trace({
-        'x': data['time'],
-        'y': data['Altitude'],
-        'name': 'Altitude',
-        'mode': 'lines+markers',
-        'type': 'scatter'
-    }, 1, 1)
-    fig.append_trace({
-        'x': data['Longitude'],
-        'y': data['Latitude'],
-        'text': data['time'],
-        'name': 'Longitude vs Latitude',
-        'mode': 'lines+markers',
-        'type': 'scatter'
-    }, 2, 1)
-
-    return fig
-
+app.css.append_css({'external_url': 'https://codepen.io/chriddyp/pen/bWLwgP.css'})
 
 if __name__ == '__main__':
     app.run_server(debug=True)

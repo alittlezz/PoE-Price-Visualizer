@@ -5,12 +5,21 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_caching import Cache
 import datetime
+import numpy as np
+import random
 
 league_name = "Delve"
 
 server = Flask(__name__)
 server.config["SQLALCHEMY_DATABASE_URI"] = "postgres://ybosjhdyfhfhct:f2695864f05a7f9ceb35416bde81348b581cdf40f3cdad3d8cc915b8e97e029c@ec2-54-83-50-145.compute-1.amazonaws.com:5432/d59l2q0k6pnf1u"
+app = dash.Dash(server = server)
+app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
+cache = Cache(app.server, config={
+    'CACHE_TYPE': 'filesystem',
+    'CACHE_DIR': 'cache-directory'
+})
 db = SQLAlchemy(server)
 
 class Unique(db.Model):
@@ -41,12 +50,10 @@ def get_uniques():
 	results = db.session.query(Unique).all()
 	for unique in results:
 		print(unique)
+	print('-' * 30)
 	return len(results)
 
 #db.create_all()
-
-app = dash.Dash(server = server)
-app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
 
 colors = {
     'background': '#111111',
@@ -60,6 +67,30 @@ headers = list(df.columns.values)
 unique_names = open("uniqueNames.txt", "r", encoding = "latin-1").readlines()
 unique_names = list(map(lambda name : name.rstrip(), unique_names))
 
+itm_c = 1
+
+# @cache.memoize(timeout=10)
+# def get_updated_df():
+# 	global itm_c
+# 	add_unique("Item " + str(itm_c), 
+#     		   "Breach", 
+#     		   random.randint(1, 100), 
+#     		   datetime.date(random.randint(2000, 2020), random.randint(1, 12), random.randint(1, 20)))
+# 	itm_c += 1
+# 	print("Updated")
+
+# @cache.memoize(timeout=10)
+# def query_data():
+#     # This could be an expensive data querying step
+#     global dff
+#     dff =  pd.DataFrame(
+#         np.random.randint(0, 100, size=(100, 4)),
+#         columns=list('ABCD')
+#     )
+#     now = datetime.datetime.now()
+#     dff['time'] = [now - datetime.timedelta(seconds=5*i) for i in range(100)]
+#     print("$" * 30)
+
 app.layout = html.Div(
 	style={'backgroundColor': colors['background'], "height" : "100vh"}, 
 	children=[
@@ -71,7 +102,8 @@ app.layout = html.Div(
 	        }
 	    ),
 
-	    html.Div(children="Meme title", 
+	    html.Div(id = "title",
+	    		 children="Meme title", 
 	    		 style={
 			        'textAlign': 'center',
 			        'color': colors['text']
@@ -134,6 +166,12 @@ def update(input_data):
 	# 		}
 	# 	)
 
+@app.callback(
+    Output(component_id='title', component_property='children'),
+    [Input(component_id='input', component_property='value')]
+)
+def update_text(input_data):
+	return str(get_uniques())
+
 if __name__ == '__main__':
-	add_unique("Please no dup Final", "Headhunter HC", 50, datetime.date(2020, 9, 16))
-	app.run_server(debug=False)
+		app.run_server(debug=False)
