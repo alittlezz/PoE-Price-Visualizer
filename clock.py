@@ -6,7 +6,7 @@ sched = BlockingScheduler()
 
 nr = 0
 
-@sched.scheduled_job('interval', seconds = 10)
+@sched.scheduled_job('interval', seconds = 30)
 def timed_job():
 	global nr
 	add_unique("Test Item " + str(nr), "Breach HC", 123, datetime.date.today())

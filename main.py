@@ -53,8 +53,6 @@ def get_uniques():
 	print('-' * 30)
 	return len(results)
 
-#db.create_all()
-
 colors = {
     'background': '#111111',
     'text': '#7FDBFF'
@@ -66,30 +64,6 @@ headers = list(df.columns.values)
 
 unique_names = open("uniqueNames.txt", "r", encoding = "latin-1").readlines()
 unique_names = list(map(lambda name : name.rstrip(), unique_names))
-
-itm_c = 1
-
-# @cache.memoize(timeout=10)
-# def get_updated_df():
-# 	global itm_c
-# 	add_unique("Item " + str(itm_c), 
-#     		   "Breach", 
-#     		   random.randint(1, 100), 
-#     		   datetime.date(random.randint(2000, 2020), random.randint(1, 12), random.randint(1, 20)))
-# 	itm_c += 1
-# 	print("Updated")
-
-# @cache.memoize(timeout=10)
-# def query_data():
-#     # This could be an expensive data querying step
-#     global dff
-#     dff =  pd.DataFrame(
-#         np.random.randint(0, 100, size=(100, 4)),
-#         columns=list('ABCD')
-#     )
-#     now = datetime.datetime.now()
-#     dff['time'] = [now - datetime.timedelta(seconds=5*i) for i in range(100)]
-#     print("$" * 30)
 
 app.layout = html.Div(
 	style={'backgroundColor': colors['background'], "height" : "100vh"}, 
