@@ -92,7 +92,7 @@ def get_dates_range(start, end):
 def update(input_data):
 	if input_data in unique_names:
 		df_sc = get_prices(input_data, "Delve")
-		df_hc = get_prices(input_data, "Delve Hardcore")
+		df_hc = get_prices(input_data, "Hardcore Delve")
 		dates = get_dates_range(datetime.date(2018, 9, 1), datetime.date(2018, 9, 19))
 		return dcc.Graph(
 	    	id = "graph_1",
