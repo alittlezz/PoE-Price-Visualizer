@@ -1,0 +1,34 @@
+alteration 1
+fusing 2
+alchemy 3
+chaos 4
+gcp 5
+exalted 6
+chromatic 7
+jewellers 8
+chance 9
+chisel 10
+scouring 11
+blessed 12
+regret 13
+regal 14
+divine 15
+vaal 16
+wisdom 17
+portal 18
+armourer's 19
+whetstone 20
+bauble 21
+transmutation 22
+augmentation 23
+mirror 24
+coin 26
+silver 35
+apprentice sextant 45
+journeyman sextant 46
+master sextant 47
+splinter of xoph 52
+splinter of tul 53
+splinter of esh 54
+splinter of uul-netol 55
+splinter of chayula 56

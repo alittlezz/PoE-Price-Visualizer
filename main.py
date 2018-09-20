@@ -5,7 +5,6 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from flask_caching import Cache
 import datetime
 import numpy as np
 import random
@@ -16,10 +15,6 @@ server = Flask(__name__)
 server.config["SQLALCHEMY_DATABASE_URI"] = "postgres://ybosjhdyfhfhct:f2695864f05a7f9ceb35416bde81348b581cdf40f3cdad3d8cc915b8e97e029c@ec2-54-83-50-145.compute-1.amazonaws.com:5432/d59l2q0k6pnf1u"
 app = dash.Dash(server = server)
 app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
-cache = Cache(app.server, config={
-    'CACHE_TYPE': 'filesystem',
-    'CACHE_DIR': 'cache-directory'
-})
 db = SQLAlchemy(server)
 
 class Unique(db.Model):
