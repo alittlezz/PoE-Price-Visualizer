@@ -52,7 +52,7 @@ def add_unique(name, league, price, date):
 
 def get_uniques():
 	results = db.session.query(Unique).all()
-	for unique in results[-10:]:
+	for unique in results[-50:]:
 		print(unique)
 
 def delete_table():
@@ -66,19 +66,20 @@ app.layout = html.Div(
     ])
 )
 
-def get_hc(csv_name):
-	df = pd.read_csv(csv_name, encoding = "latin-1")
+def init_database():
+	df = pd.read_csv("Unique Data.csv", encoding = "latin-1")
+	dfHC = pd.read_csv("Unique Data HC.csv", encoding = "latin-1")
 	unique_names = open("uniqueNames.txt", "r", encoding = "latin-1").readlines()
 	unique_names = list(map(lambda name : name.rstrip(), unique_names))
-	for row in df.iterrows():
-		day = int(row[1][0].split()[0])
-		if day < 19:
-			continue
-		month = monthToInt[row[1][0].split()[1]]
-		date = datetime.date(2018, month, day)
-		for unique, price in zip(unique_names, row[1][1:]):
-			add_unique(unique, "Delve Hardcore", price, date)
-	db.session.commit()
+	for unique in unique_names:
+		date = datetime.date(2018, 9, 1)
+		for pc, pcHC in zip(df[unique], dfHC[unique]):
+			pc = int(pc * 100) / 100
+			pcHC = int(pcHC * 100) / 100
+			add_unique(unique, "Delve", pc, date)
+			add_unique(unique, "Hardcore Delve", pcHC, date)
+			date = date + datetime.timedelta(days = 1)
+		db.session.commit()
 	#os.system("shutdown -s -t 0")
 
 if __name__ == "__main__":

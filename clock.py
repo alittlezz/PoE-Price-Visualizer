@@ -1,11 +1,17 @@
 from apscheduler.schedulers.blocking import BlockingScheduler
-from main import db, add_unique
+from main import db
 import price_gatherer as PG
 import datetime
 
 sched = BlockingScheduler()
 
 current_league = "Delve"
+current_league_HC = "Hardcore " + current_league
+
+def add_unique(name, league, price, date):
+	unique = Unique(name, league, price, date)
+	db.session.add(unique)
+	db.session.commit()
 
 @sched.scheduled_job('interval', days = 1)
 def timed_job():
@@ -16,9 +22,9 @@ def timed_job():
 	for unique, price in zip(unique_names, prices):
 		add_unique(unique, current_league, price, datetime.date.today())
 
-	prices = PG.gatherPrices("Hardcore " + current_league)
+	prices = PG.gatherPrices(current_league_HC)
 	for unique, price in zip(unique_names, prices):
-		add_unique(unique, current_league + " Hardcore", price, datetime.date.today())
+		add_unique(unique, current_league_HC, price, datetime.date.today())
 
 	db.session.commit()
 

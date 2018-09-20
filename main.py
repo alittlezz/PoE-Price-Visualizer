@@ -36,26 +36,14 @@ class Unique(db.Model):
 	def __str__(self):
 		return self.name + ' ' + self.league + ' ' + str(self.price) + ' ' + str(self.date)
 
-def add_unique(name, league, price, date):
-	unique = Unique(name, league, price, date)
-	db.session.add(unique)
-	db.session.commit()
-
-def get_uniques():
-	results = db.session.query(Unique).all()
-	for unique in results:
-		print(unique)
-	print('-' * 30)
-	return len(results)
+def get_prices(name, league):
+	query = Unique.query.with_entities(Unique.price).filter(Unique.name == name, Unique.league == league).all()
+	return [price[0] for price in query]
 
 colors = {
     'background': '#111111',
     'text': '#7FDBFF'
 }
-
-df = pd.read_csv("Unique Data.csv", encoding = "latin-1")
-dfHC = pd.read_csv("Unique Data HC.csv", encoding = "latin-1")
-headers = list(df.columns.values)
 
 unique_names = open("uniqueNames.txt", "r", encoding = "latin-1").readlines()
 unique_names = list(map(lambda name : name.rstrip(), unique_names))
@@ -94,23 +82,28 @@ app.layout = html.Div(
 	]
 )
 
+def get_dates_range(start, end):
+	return [start + datetime.timedelta(days = i) for i in range(0, (end - start).days + 1)]
 
 @app.callback(
     Output(component_id='output-graph', component_property='children'),
     [Input(component_id='input', component_property='value')]
 )
 def update(input_data):
-	if input_data in headers:
+	if input_data in unique_names:
+		df_sc = get_prices(input_data, "Delve")
+		df_hc = get_prices(input_data, "Delve Hardcore")
+		dates = get_dates_range(datetime.date(2018, 9, 1), datetime.date(2018, 9, 19))
 		return dcc.Graph(
 	    	id = "graph_1",
 			figure = {
 			"data" : [
-				{'x' : df["Date"], 
-				 'y' : df[input_data], 
+				{'x' : dates, 
+				 'y' : df_sc, 
 				 "type" : "line", 
 				 "name" : league_name},
-				{'x' : dfHC["Date"],
-				 'y' : dfHC[input_data],
+				{'x' : dates,
+				 'y' : df_hc,
 				 "type" : "line",
 				 "name" : league_name + " Hardcore"}
 			],
@@ -134,13 +127,6 @@ def update(input_data):
 	# 			"height" : "500px"
 	# 		}
 	# 	)
-
-@app.callback(
-    Output(component_id='title', component_property='children'),
-    [Input(component_id='input', component_property='value')]
-)
-def update_text(input_data):
-	return str(get_uniques())
 
 if __name__ == '__main__':
 		app.run_server(debug=False)

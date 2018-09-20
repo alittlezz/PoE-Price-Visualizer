@@ -142,7 +142,9 @@ def gatherPrices(league):
 	uniques = getUniquesFromFile()
 	for i, unique in enumerate(uniques):
 		unique = unique.rstrip()
-		prices.append(getAveragePrice(unique, ratios, league))
+		price = getAveragePrice(unique, ratios, league)
+		price = int(price * 100) / 100
+		prices.append(price)
 		# if i%5 == 0:
 		# 	print(i / len(uniques) * 100)
 	return prices
