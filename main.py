@@ -19,7 +19,6 @@ server.config["SQLALCHEMY_DATABASE_URI"] = "postgres://jrpvletsmdcqow:a2927f5c87
 app = dash.Dash(server = server)
 app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
 db = SQLAlchemy(server)
-PG.gatherPrices("Delve")
 
 class Unique(db.Model):
 	id = db.Column(db.Integer, primary_key = True)
@@ -97,6 +96,7 @@ def get_dates_range(start, end):
     [Input(component_id='input', component_property='value')]
 )
 def update(input_data):
+	PG.gatherPrices("Delve")
 	if input_data in unique_names:
 		df_sc = get_prices(input_data, "Delve")
 		df_hc = get_prices(input_data, "Hardcore Delve")
