@@ -19,6 +19,7 @@ server.config["SQLALCHEMY_DATABASE_URI"] = "postgres://jrpvletsmdcqow:a2927f5c87
 app = dash.Dash(server = server)
 app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
 db = SQLAlchemy(server)
+PG.gatherPrices("Delve")
 
 class Unique(db.Model):
 	id = db.Column(db.Integer, primary_key = True)
@@ -135,6 +136,4 @@ def update(input_data):
 	# 	)
 
 if __name__ == '__main__':
-	PG.gatherPrices("Delve")
-	print("finished")
 	app.run_server(debug=True)
