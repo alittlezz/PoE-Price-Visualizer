@@ -10,7 +10,7 @@ sched = BlockingScheduler()
 current_league = "Delve"
 current_league_HC = "Hardcore " + current_league
 
-@sched.scheduled_job('interval', hours = 1)
+@sched.scheduled_job('interval', hours = 1, misfire_grace_time = None)
 def timed_job():
 	unique_names = open("uniqueNames.txt", "r", encoding = "latin-1").readlines()
 	unique_names = list(map(lambda name : name.rstrip(), unique_names))
