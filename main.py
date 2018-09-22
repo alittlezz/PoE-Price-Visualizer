@@ -8,6 +8,9 @@ from flask_sqlalchemy import SQLAlchemy
 import datetime
 import numpy as np
 import random
+import sys
+sys.path.append("/price_gatherer")
+from gatherer import price_gatherer as PG
 
 league_name = "Delve"
 
@@ -132,4 +135,5 @@ def update(input_data):
 	# 	)
 
 if __name__ == '__main__':
-		app.run_server(debug=False)
+	PG.gatherPrices("Delve")
+	app.run_server(debug=False)
