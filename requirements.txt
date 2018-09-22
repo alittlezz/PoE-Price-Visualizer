@@ -12,3 +12,4 @@ APScheduler==3.5.3
 beautifulsoup4==4.6.0
 urllib3==1.22
 mpmath==1.0.0
+lxml==4.2.1
