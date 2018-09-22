@@ -7,6 +7,10 @@ from flask_sqlalchemy import SQLAlchemy
 import datetime
 import pandas as pd
 import time
+import sys
+sys.path.append("/price_gatherer")
+from gatherer import price_gatherer
+
 
 server = Flask(__name__)
 server.config["SQLALCHEMY_DATABASE_URI"] = "postgres://jrpvletsmdcqow:a2927f5c870c6efe8427e8709469eab75830a9c8898486c292e1536550d20fa1@ec2-23-23-253-106.compute-1.amazonaws.com:5432/d6178vkpqi46i8"
@@ -43,6 +47,9 @@ class Unique(db.Model):
 
 	def __str__(self):
 		return str(self.id) + ' ' + self.name + ' ' + self.league + ' ' + str(self.prices)
+
+def testing():
+	prices = price_gatherer.gatherPrices("Delve")
 
 def add_unique(name, league):
 	unique = Unique(name, league)

@@ -1,5 +1,5 @@
-import UniqueNamesGatherer as UNG
-import UniqueCleaner as UC
+from gatherer import UniqueNamesGatherer as UNG
+from gatherer import UniqueCleaner as UC
 import pandas as pd
 import bs4 as bs
 import urllib.parse
@@ -196,7 +196,7 @@ def getCurrencyRatio(id, league):
 		return 0
 
 def getCurrencyRatios(league):
-	file = open("currencyNames.txt", "r")
+	file = open("gatherer/currencyNames.txt", "r")
 	ratios = {}
 	for currency in file.readlines():
 		currency = currency.split()
@@ -231,4 +231,4 @@ def main():
 	print("Finished loading ", leagueNameHC, " items")
 	#os.system("shutdown -s -t 0")
 
-main()
+#main()

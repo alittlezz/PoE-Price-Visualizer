@@ -1,6 +1,8 @@
 from apscheduler.schedulers.blocking import BlockingScheduler
 from main import db, add_price
-import price_gatherer as PG
+import sys
+sys.path.append("/price_gatherer")
+from gatherer import price_gatherer as PG
 import datetime
 
 sched = BlockingScheduler()
