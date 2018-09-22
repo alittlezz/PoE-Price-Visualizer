@@ -8,9 +8,6 @@ from flask_sqlalchemy import SQLAlchemy
 import datetime
 import numpy as np
 import random
-import sys
-sys.path.append("/price_gatherer")
-from gatherer import price_gatherer as PG
 
 league_name = "Delve"
 
@@ -96,7 +93,6 @@ def get_dates_range(start, end):
     [Input(component_id='input', component_property='value')]
 )
 def update(input_data):
-	PG.gatherPrices("Delve")
 	if input_data in unique_names:
 		df_sc = get_prices(input_data, "Delve")
 		df_hc = get_prices(input_data, "Hardcore Delve")
@@ -136,4 +132,4 @@ def update(input_data):
 	# 	)
 
 if __name__ == '__main__':
-	app.run_server(debug=True)
+	app.run_server(debug=False)
