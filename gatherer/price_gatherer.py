@@ -55,7 +55,7 @@ def saveToFile(items):
 
 def getUniquesFromFile():
 	uniques = []
-	for unique in open(uniqueFileName, "r").readlines():
+	for unique in open(uniqueFileName, "r", encoding = "latin-1").readlines():
 		uniques.append(unique.rstrip())
 	return uniques
 
