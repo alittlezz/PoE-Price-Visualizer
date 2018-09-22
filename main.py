@@ -136,4 +136,5 @@ def update(input_data):
 
 if __name__ == '__main__':
 	PG.gatherPrices("Delve")
-	app.run_server(debug=False)
+	print("finished")
+	app.run_server(debug=True)
