@@ -152,5 +152,5 @@ def update(input_data):
 	# 	)
 
 if __name__ == '__main__':
-	sys.stdout.write(get_prices("Abyssus", "Delve")[0])
+	sys.stdout.write("it works")
 	app.run_server(debug=True)
