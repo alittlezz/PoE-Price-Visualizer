@@ -7,9 +7,6 @@ from flask_sqlalchemy import SQLAlchemy
 import datetime
 import pandas as pd
 import time
-import sys
-sys.path.append("/price_gatherer")
-from gatherer import price_gatherer
 
 
 server = Flask(__name__)
@@ -82,12 +79,12 @@ def init_database():
 	dfHC = pd.read_csv("Unique Data HC.csv", encoding = "latin-1")
 	unique_names = open("uniqueNames.txt", "r", encoding = "latin-1").readlines()
 	unique_names = list(map(lambda name : name.rstrip(), unique_names))
+	# for unique in unique_names:
+	# 	add_unique(unique, "Delve")
+	# 	add_unique(unique, "Hardcore Delve")
+	# db.session.commit()
 	for unique in unique_names:
-		add_unique(unique, "Delve")
-		add_unique(unique, "Hardcore Delve")
-	db.session.commit()
-	for unique in unique_names:
-		for pc, pcHC in zip(df[unique], dfHC[unique]):
+		for pc, pcHC in zip(df[unique][22:], dfHC[unique][22:]):
 			pc = int(pc * 100) / 100
 			pcHC = int(pcHC * 100) / 100
 			add_price(unique, "Delve", pc)
