@@ -95,5 +95,5 @@ def init_database():
 
 if __name__ == "__main__":
 	#add_unique("Tudor eat", "HH NO QQ", 123.23, datetime.date.today())
-	get_uniques()
+	#get_uniques()
 	app.run_server(debug=False)

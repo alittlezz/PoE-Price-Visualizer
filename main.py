@@ -44,25 +44,6 @@ def add_price(name, league, price):
 	new_prices = unique.first().prices + [price]
 	unique.update({"prices" : new_prices})
 
-def init_database():
-	df = pd.read_csv("Unique Data.csv", encoding = "latin-1")
-	dfHC = pd.read_csv("Unique Data HC.csv", encoding = "latin-1")
-	unique_names = open("uniqueNames.txt", "r", encoding = "latin-1").readlines()
-	unique_names = list(map(lambda name : name.rstrip(), unique_names))
-	# for unique in unique_names:
-	# 	add_unique(unique, "Delve")
-	# 	add_unique(unique, "Hardcore Delve")
-	# db.session.commit()
-	for unique in unique_names:
-		for pc, pcHC in zip(df[unique][22:], dfHC[unique][22:]):
-			pc = int(pc * 100) / 100
-			pcHC = int(pcHC * 100) / 100
-			add_price(unique, "Delve", pc)
-			add_price(unique, "Hardcore Delve", pcHC)
-		db.session.commit()
-		#print("Finished " + unique)
-	#os.system("shutdown -s -t 0")
-
 colors = {
     'background': '#111111',
     'text': '#7FDBFF'
@@ -152,5 +133,4 @@ def update(input_data):
 	# 	)
 
 if __name__ == '__main__':
-	init_database()
 	app.run_server(debug=False)
