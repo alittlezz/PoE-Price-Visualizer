@@ -1,2 +1,2 @@
-web: gunicorn main:server --log-file=
+web: gunicorn main:server
 clock: python clock.py

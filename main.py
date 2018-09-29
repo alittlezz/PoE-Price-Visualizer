@@ -8,6 +8,7 @@ from flask_sqlalchemy import SQLAlchemy
 import datetime
 import numpy as np
 import random
+import sys
 
 league_name = "Delve"
 
@@ -151,5 +152,5 @@ def update(input_data):
 	# 	)
 
 if __name__ == '__main__':
-	print(get_prices("Abyssus", "Delve"))
+	sys.stdout.write(get_prices("Abyssus", "Delve")[0])
 	app.run_server(debug=True)
