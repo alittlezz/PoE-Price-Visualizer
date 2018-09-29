@@ -152,4 +152,4 @@ def update(input_data):
 
 if __name__ == '__main__':
 	print(get_prices("Abyssus", "Delve"))
-	app.run_server(debug=False)
+	app.run_server(debug=True)
