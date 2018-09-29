@@ -60,7 +60,7 @@ def init_database():
 			add_price(unique, "Delve", pc)
 			add_price(unique, "Hardcore Delve", pcHC)
 		db.session.commit()
-		print("Finished " + unique)
+		#print("Finished " + unique)
 	#os.system("shutdown -s -t 0")
 
 colors = {
@@ -152,5 +152,5 @@ def update(input_data):
 	# 	)
 
 if __name__ == '__main__':
-	sys.stdout.write("it works")
-	app.run_server(debug=True)
+	init_database()
+	app.run_server(debug=False)
