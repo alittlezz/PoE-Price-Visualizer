@@ -44,6 +44,15 @@ def add_price(name, league, price):
 	new_prices = unique.first().prices + [price]
 	unique.update({"prices" : new_prices})
 
+def get_timeline(unique_name, league_name):
+	prices = get_prices(unique_name, league_name)
+	dates = get_dates_range(datetime.date(2018, 9, 1), datetime.date.today())
+	for i, price in enumerate(prices):
+		if price == -1:
+			del dates[i]
+	prices = list(filter(lambda x : x > -1, prices))
+	return (dates, prices)
+
 colors = {
     'background': '#111111',
     'text': '#7FDBFF'
@@ -95,19 +104,19 @@ def get_dates_range(start, end):
 )
 def update(input_data):
 	if input_data in unique_names:
-		df_sc = get_prices(input_data, "Delve")
-		df_hc = get_prices(input_data, "Hardcore Delve")
-		dates = get_dates_range(datetime.date(2018, 9, 1), datetime.date.today())
+		df_sc = get_timeline(input_data, "Delve")
+		#print(df_sc)
+		df_hc = get_timeline(input_data, "Hardcore Delve")
 		return dcc.Graph(
 	    	id = "graph_1",
 			figure = {
 			"data" : [
-				{'x' : dates, 
-				 'y' : df_sc, 
+				{'x' : df_sc[0], 
+				 'y' : df_sc[1], 
 				 "type" : "line", 
 				 "name" : league_name},
-				{'x' : dates,
-				 'y' : df_hc,
+				{'x' : df_hc[0],
+				 'y' : df_hc[1],
 				 "type" : "line",
 				 "name" : league_name + " Hardcore"}
 			],
@@ -123,14 +132,6 @@ def update(input_data):
                 }
             }
 		})
-	# else:
-	# 	return html.Div(
-	# 		id = "graph_1",
-	# 		style = {
-	# 			"color" : colors["background"],
-	# 			"height" : "500px"
-	# 		}
-	# 	)
 
 if __name__ == '__main__':
 	app.run_server(debug=False)
