@@ -48,7 +48,7 @@ def get_timeline(unique_name, league_name):
 	prices = get_prices(unique_name, league_name)
 	dates = get_dates_range(datetime.date(2018, 9, 1), datetime.date.today())
 	dates_to_delete = []
-	for price, date in zip(prices, dates)
+	for price, date in zip(prices, dates):
 		if price == -1:
 			dates_to_delete.append(date)
 	for date in dates_to_delete:
