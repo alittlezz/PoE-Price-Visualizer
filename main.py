@@ -50,7 +50,7 @@ def get_timeline(unique_name, league_name):
 	for i, price in enumerate(prices):
 		if price == -1:
 			del dates[i]
-	prices = list(filter(lambda x : x > -1, prices))
+	prices = list(filter(lambda x : x > 0, prices))
 	return (dates, prices)
 
 colors = {
