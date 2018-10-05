@@ -13,7 +13,7 @@ import sys
 league_name = "Delve"
 
 server = Flask(__name__)
-server.config["SQLALCHEMY_DATABASE_URI"] = "postgres://jrpvletsmdcqow:a2927f5c870c6efe8427e8709469eab75830a9c8898486c292e1536550d20fa1@ec2-23-23-253-106.compute-1.amazonaws.com:5432/d6178vkpqi46i8"
+server.config["SQLALCHEMY_DATABASE_URI"] = "private_uri"
 app = dash.Dash(server = server)
 app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
 db = SQLAlchemy(server)
@@ -108,7 +108,6 @@ def get_dates_range(start, end):
 def update(input_data):
 	if input_data in unique_names:
 		df_sc = get_timeline(input_data, "Delve")
-		#print(df_sc)
 		df_hc = get_timeline(input_data, "Hardcore Delve")
 		return dcc.Graph(
 	    	id = "graph_1",
